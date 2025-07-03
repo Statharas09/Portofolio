@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Code Editor</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="editor-container">
+    <div class="labels">
+      <div>HTML</div>
+      <div>CSS</div>
+      <div>JavaScript</div>
+    </div>
+    <div class="editors">
+      <textarea id="html" placeholder="Write HTML here...">&lt;h1&gt;Hello, world!&lt;/h1&gt;</textarea>
+      <textarea id="css" placeholder="Write CSS here...">h1 { color: #ec407a; text-align: center; }</textarea>
+      <textarea id="js" placeholder="Write JavaScript here...">console.log('Hello from JS!');</textarea>
+    </div>
+    <button class="run-btn" id="runBtn">Run ▶</button>
+    <div class="output-container">
+      <iframe id="output"></iframe>
+    </div>
+  </div>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script src="site.js"></script>
+  <script>
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+  </script>
+  <a href="login.html" id="authBtn">Login</a>
+</body>
+</html>

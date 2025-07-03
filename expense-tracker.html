@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #18141a; color: #fff; }
+    .expense-container { max-width: 400px; margin: 40px auto; background: #222; border-radius: 14px; box-shadow: 0 4px 24px #b71c1c33; padding: 32px 24px; }
+    .expense-container h2 { color: #ff5252; }
+    .expense-form input, .expense-form select {
+      width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1.5px solid #b71c1c; font-size: 1em; background: #18141a; color: #fff;
+    }
+    .expense-form button {
+      width: 100%; padding: 10px; background: #ff5252; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1em; cursor: pointer;
+    }
+    .expense-list { margin-top: 24px; }
+    .expense-item { display: flex; justify-content: space-between; align-items: center; background: #2d232a; margin-bottom: 8px; padding: 10px 14px; border-radius: 8px; }
+    .expense-item span { font-size: 1em; }
+    .expense-item button { background: none; border: none; color: #ff5252; font-size: 1.2em; cursor: pointer; }
+    .expense-summary { margin-top: 18px; color: #ffd600; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="expense-container">
+    <h2>Expense Tracker</h2>
+    <form class="expense-form" id="expenseForm">
+      <input type="text" id="desc" placeholder="Description" required>
+      <input type="number" id="amount" placeholder="Amount" min="0.01" step="0.01" required>
+      <select id="category" required>
+        <option value="">Category</option>
+        <option>Food</option>
+        <option>Transport</option>
+        <option>Shopping</option>
+        <option>Entertainment</option>
+        <option>Other</option>
+      </select>
+      <button type="submit">Add Expense</button>
+    </form>
+    <div class="expense-summary" id="expenseSummary"></div>
+    <div class="expense-list" id="expenseList"></div>
+  </div>
+  <footer style="text-align:center;margin-top:40px;color:#ff5252;">
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script>
+    // Expense Tracker Logic
+    let expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
+    function renderExpenses() {
+      const list = document.getElementById('expenseList');
+      list.innerHTML = '';
+      let total = 0;
+      expenses.forEach((e, i) => {
+        total += Number(e.amount);
+        const div = document.createElement('div');
+        div.className = 'expense-item';
+        div.innerHTML = `<span>${e.desc} (${e.category})</span>
+          <span>$${Number(e.amount).toFixed(2)}</span>
+          <button onclick="deleteExpense(${i})" title="Delete">&times;</button>`;
+        list.appendChild(div);
+      });
+      document.getElementById('expenseSummary').textContent = `Total: $${total.toFixed(2)}`;
+    }
+    function deleteExpense(idx) {
+      expenses.splice(idx, 1);
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      renderExpenses();
+    }
+    document.getElementById('expenseForm').onsubmit = function(e) {
+      e.preventDefault();
+      const desc = document.getElementById('desc').value;
+      const amount = document.getElementById('amount').value;
+      const category = document.getElementById('category').value;
+      expenses.push({ desc, amount, category });
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      this.reset();
+      renderExpenses();
+    };
+    window.deleteExpense = deleteExpense;
+    renderExpenses();
+
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+  </script>
+  <a href="login.html" id="authBtn">Login</a>
+</body>
+</html>

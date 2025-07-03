@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drawing Canvas App</title>
+  <link rel="stylesheet" href="canvas.css">
+</head>
+<body>
+  <div class="canvas-container">
+    <h1>Drawing Canvas</h1>
+    <div class="toolbar">
+      <label>
+        Color:
+        <input type="color" id="colorPicker" value="#4285f4">
+      </label>
+      <label>
+        Brush Size:
+        <input type="range" id="brushSize" min="2" max="30" value="6">
+      </label>
+      <button id="clearBtn">Clear</button>
+      <button id="saveBtn">Save as Image</button>
+    </div>
+    <canvas id="drawCanvas" width="700" height="400"></canvas>
+  </div>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script src="canvas.js"></script>
+  <script>
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+  </script>
+  <a href="login.html" id="authBtn">Login</a>
+</body>
+</html>

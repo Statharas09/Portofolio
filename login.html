@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Your Name</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <button id="toggleMode" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+  <div class="login-container" style="max-width:400px;margin:60px auto;">
+    <div class="login-logo">Login</div>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <div id="loginMsg"></div>
+    <div style="margin-top:20px;">
+      <span>Don't have an account?</span>
+      <button id="showRegister" style="background:none;color:#4285f4;border:none;cursor:pointer;">Register</button>
+    </div>
+    <form id="registerForm" style="display:none;">
+      <input type="text" id="regUsername" placeholder="Username" required><br>
+      <input type="password" id="regPassword" placeholder="Password" required><br>
+      <button type="submit">Register</button>
+    </form>
+    <div id="registerMsg"></div>
+  </div>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script>
+    // Simple localStorage login/register demo
+    document.getElementById('showRegister').onclick = function() {
+      document.getElementById('registerForm').style.display = '';
+    };
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      const users = JSON.parse(localStorage.getItem('users')||'[]');
+      const found = users.find(x=>x.u===u && x.p===p);
+      if (found) {
+        document.getElementById('loginMsg').textContent = "Login successful!";
+        localStorage.setItem('lastUser', u); // Track last logged in user
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 800);
+      } else {
+        document.getElementById('loginMsg').textContent = "Invalid credentials!";
+      }
+    };
+    document.getElementById('registerForm').onsubmit = function(e) {
+      e.preventDefault();
+      const u = document.getElementById('regUsername').value;
+      const p = document.getElementById('regPassword').value;
+      let users = JSON.parse(localStorage.getItem('users')||'[]');
+      if(users.find(x=>x.u===u)) {
+        document.getElementById('registerMsg').textContent = "Username already exists!";
+        return;
+      }
+      users.push({u,p});
+      localStorage.setItem('users',JSON.stringify(users));
+      document.getElementById('registerMsg').textContent = "Registered! You can now login.";
+      document.getElementById('registerForm').reset();
+    };
+    // Full Dark/Light Mode Toggle
+    const toggleBtn = document.getElementById('toggleMode');
+    function setFullTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('full-dark');
+        document.body.classList.remove('full-light');
+        toggleBtn.textContent = "☀️";
+        localStorage.setItem('fullTheme', 'dark');
+      } else {
+        document.body.classList.remove('full-dark');
+        document.body.classList.add('full-light');
+        toggleBtn.textContent = "🌙";
+        localStorage.setItem('fullTheme', 'light');
+      }
+    }
+    toggleBtn.onclick = function() {
+      const isDark = document.body.classList.contains('full-dark');
+      setFullTheme(isDark ? 'light' : 'dark');
+    };
+    setFullTheme(localStorage.getItem('fullTheme') === 'dark' ? 'dark' : 'light');
+  </script>
+</body>
+</html>

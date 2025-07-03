@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | Grimzx</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #18141a;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    nav {
+      background: #1a181b;
+      border-bottom: 1px solid #2d232a;
+      padding: 18px 32px;
+      font-size: 1.1em;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #ff5252;
+    }
+    .admin-container {
+      max-width: 900px;
+      margin: 40px auto 32px auto;
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px #1a181b;
+      padding: 36px 40px 32px 40px;
+    }
+    h2, h3 {
+      color: #ff5252;
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+    section {
+      margin-bottom: 36px;
+      border-bottom: 1px solid #2d232a;
+      padding-bottom: 24px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      background: #18141a;
+      border: 1px solid #2d232a;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      font-size: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    button {
+      background: #ff5252;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 18px;
+      font-size: 1em;
+      margin-top: 8px;
+      margin-right: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #b71c1c;
+    }
+    .danger {
+      background: #b71c1c !important;
+    }
+    .admin-badge {
+      background: #ff5252;
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 6px;
+      margin-left: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      font-size: 0.95em;
+    }
+    .admin-section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .empty-msg {
+      color: #888;
+      font-style: italic;
+      margin: 12px 0;
+    }
+    footer {
+      text-align: center;
+      color: #888;
+      background: #18141a;
+      border-top: 1px solid #2d232a;
+      padding: 18px 0 10px 0;
+      font-size: 0.98em;
+      margin-top: 40px;
+    }
+    /* Toggle Mode Styles */
+    #toggleMode {
+      background: none;
+      border: none;
+      color: #ff5252;
+      font-size: 1.4em;
+      margin-left: 18px;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 transparent;
+    }
+    #toggleMode:hover {
+      background: #ff5252;
+      color: #fff;
+      box-shadow: 0 0 8px #ff5252aa;
+    }
+    /* Light mode override */
+    body.full-light {
+      background: #fff !important;
+      color: #222 !important;
+    }
+    body.full-light nav,
+    body.full-light .admin-container,
+    body.full-light footer {
+      background: #fff !important;
+      color: #222 !important;
+      border-color: #e0e0e0 !important;
+    }
+    body.full-light h2, body.full-light h3, body.full-light .admin-badge {
+      color: #b71c1c !important;
+      background: #fff !important;
+    }
+    body.full-light li {
+      background: #f5f6fa !important;
+      border-color: #e0e0e0 !important;
+      color: #222 !important;
+    }
+    body.full-light button {
+      background: #b71c1c !important;
+      color: #fff !important;
+    }
+    body.full-light button:hover {
+      background: #ff5252 !important;
+    }
+    body.full-light .danger {
+      background: #ff5252 !important;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="login.html" class="login-btn">Login</a>
+    <span class="admin-badge">ADMIN</span>
+    <button id="toggleMode" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+  <div id="adminAuth" style="max-width:400px;margin:60px auto;display:none;">
+    <h2 style="color:#ff5252;">Admin Login</h2>
+    <form id="adminLoginForm" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="text" id="adminUser" placeholder="Username" autocomplete="username" required>
+      <input type="password" id="adminPass" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit">Login</button>
+      <div id="adminAuthStatus" style="color:#e53935;font-size:1em;"></div>
+    </form>
+  </div>
+  <div class="admin-container" id="adminPanel" style="display:none;">
+    <h2 class="admin-section-title">Admin Dashboard <span class="admin-badge">ADMIN</span></h2>
+
+    <section>
+      <h3>Contact Messages</h3>
+      <ul id="contactMsgList"></ul>
+    </section>
+
+    <section>
+      <h3>Registered Users</h3>
+      <ul id="userList"></ul>
+      <button class="danger" id="clearUsersBtn">Delete All Users</button>
+    </section>
+
+    <section>
+      <h3>Suggestions</h3>
+      <ul id="commentList"></ul>
+      <button class="danger" id="clearCommentsBtn">Delete All Suggestions</button>
+    </section>
+
+    <section>
+      <h3>Site Data</h3>
+      <button id="downloadDataBtn">Download Site Data</button>
+    </section>
+  </div>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script>
+    // Toggle Mode Logic
+    const toggleBtn = document.getElementById('toggleMode');
+    function setFullTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('full-dark');
+        document.body.classList.remove('full-light');
+        toggleBtn.textContent = "☀️";
+        localStorage.setItem('fullTheme', 'dark');
+      } else {
+        document.body.classList.remove('full-dark');
+        document.body.classList.add('full-light');
+        toggleBtn.textContent = "🌙";
+        localStorage.setItem('fullTheme', 'light');
+      }
+    }
+    toggleBtn.onclick = function() {
+      const isDark = document.body.classList.contains('full-dark');
+      setFullTheme(isDark ? 'light' : 'dark');
+    };
+    setFullTheme(localStorage.getItem('fullTheme') === 'dark' ? 'dark' : 'light');
+
+    // XSS Protection: Escape HTML
+    function escapeHTML(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Admin authentication logic
+    function showAdminPanel() {
+      document.getElementById('adminAuth').style.display = "none";
+      document.getElementById('adminPanel').style.display = "";
+      // Change nav login button to logout
+      const loginBtn = document.querySelector('.login-btn');
+      if (loginBtn) {
+        loginBtn.textContent = "Logout";
+        loginBtn.onclick = function(e) {
+          e.preventDefault();
+          sessionStorage.removeItem('isAdmin');
+          window.location.href = "login.html";
+        };
+        loginBtn.href = "#";
+      }
+    }
+    function hideAdminPanel() {
+      document.getElementById('adminAuth').style.display = "";
+      document.getElementById('adminPanel').style.display = "none";
+      // Reset nav login button to Login
+      const loginBtn = document.querySelector('.login-btn');
+      if (loginBtn) {
+        loginBtn.textContent = "Login";
+        loginBtn.onclick = null;
+        loginBtn.href = "login.html";
+      }
+    }
+    // Check session
+    if (sessionStorage.getItem('isAdmin') === 'true') {
+      showAdminPanel();
+    } else {
+      hideAdminPanel();
+    }
+    document.getElementById('adminLoginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value;
+      if (user === 'grimz_x1' && pass === 'grimz_x1') {
+        sessionStorage.setItem('isAdmin', 'true');
+        showAdminPanel();
+      } else {
+        document.getElementById('adminAuthStatus').textContent = "Invalid credentials.";
+      }
+    };
+
+    // Optional: Logout button for admin (add this button in your admin panel if you want)
+    // <button onclick="adminLogout()">Logout</button>
+    function adminLogout() {
+      sessionStorage.removeItem('isAdmin');
+      hideAdminPanel();
+    }
+
+    // Contact Messages
+    function renderContactMessages() {
+      const list = document.getElementById('contactMsgList');
+      list.innerHTML = '';
+      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+      if (messages.length === 0) {
+        list.innerHTML = '<li class="empty-msg">No messages yet.</li>';
+        return;
+      }
+      messages.forEach((m, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div><b>Email:</b> ${escapeHTML(m.email)}</div>
+          <div><b>Message:</b> ${escapeHTML(m.msg)}</div>
+          <div><b>Date:</b> ${escapeHTML(m.date)}</div>
+          <div>
+            <button onclick="respondMsg('${escapeHTML(m.email)}')">Respond</button>
+            <button class="danger" onclick="deleteMsg(${i})">Delete</button>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+    }
+    window.respondMsg = function(email) {
+      window.location.href = "mailto:" + email;
+    };
+    window.deleteMsg = function(idx) {
+      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+      messages.splice(idx, 1);
+      localStorage.setItem('contactMessages', JSON.stringify(messages));
+      renderContactMessages();
+    };
+    renderContactMessages();
+
+    // Users
+    function renderUsers() {
+      const list = document.getElementById('userList');
+      list.innerHTML = '';
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      if (users.length === 0) {
+        list.innerHTML = '<li class="empty-msg">No users registered.</li>';
+        return;
+      }
+      users.forEach((u, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<div><b>Username:</b> ${escapeHTML(u.u || u.username || '')}</div>`;
+        list.appendChild(li);
+      });
+    }
+    document.getElementById('clearUsersBtn').onclick = function() {
+      localStorage.removeItem('users');
+      renderUsers();
+    };
+    renderUsers();
+
+    // Comments (Suggestions sent from blog)
+    function renderComments() {
+      const list = document.getElementById('commentList');
+      list.innerHTML = '';
+      const comments = JSON.parse(localStorage.getItem('pendingSuggestions') || '[]');
+      if (comments.length === 0) {
+        list.innerHTML = '<li class="empty-msg">No suggestions yet.</li>';
+        return;
+      }
+      comments.forEach((c, i) => {
+        const user = escapeHTML(c.user || "Anonymous");
+        const text = escapeHTML(c.text || "");
+        const ago = timeAgo(c.date || Date.now());
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${user}:</b> ${text} <span style="color:#888;font-size:0.95em;">(${ago})</span>
+          <button class="danger" onclick="deleteSuggestion(${i})">Delete</button>`;
+        list.appendChild(li);
+      });
+    }
+    function timeAgo(date) {
+      const now = Date.now();
+      const diff = Math.floor((now - date) / 1000);
+      if (diff < 60) return `${diff} second${diff !== 1 ? 's' : ''} ago`;
+      if (diff < 3600) return `${Math.floor(diff/60)} minute${Math.floor(diff/60) !== 1 ? 's' : ''} ago`;
+      if (diff < 86400) return `${Math.floor(diff/3600)} hour${Math.floor(diff/3600) !== 1 ? 's' : ''} ago`;
+      return `${Math.floor(diff/86400)} day${Math.floor(diff/86400) !== 1 ? 's' : ''} ago`;
+    }
+    window.deleteSuggestion = function(idx) {
+      const comments = JSON.parse(localStorage.getItem('pendingSuggestions') || '[]');
+      comments.splice(idx, 1);
+      localStorage.setItem('pendingSuggestions', JSON.stringify(comments));
+      renderComments();
+    };
+    renderComments();
+
+    // Download Site Data
+    document.getElementById('downloadDataBtn').onclick = function() {
+      const data = {
+        users: JSON.parse(localStorage.getItem('users')||'[]'),
+        comments: JSON.parse(localStorage.getItem('comments')||'[]'),
+        contactMessages: JSON.parse(localStorage.getItem('contactMessages')||'[]'),
+        lastUser: localStorage.getItem('lastUser')||null
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "site-data.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+  </script>
+</body>
+</html>

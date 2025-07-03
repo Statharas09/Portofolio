@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Name | Portfolio</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .red-auth-btn {
+      background: #ff5252;
+      color: #fff !important;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 1.15em;
+      font-weight: bold;
+      margin-left: 18px;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px #ff525244;
+      display: inline-block;
+      border: none;
+    }
+    .red-auth-btn:hover {
+      background: #b71c1c;
+      color: #fff !important;
+      box-shadow: 0 6px 24px #ff525288;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="blog.html" id="suggestionsNav" class="nav-link">Suggestions</a>
+    <a href="#career">Career</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html" id="authBtn" class="red-auth-btn">Login</a>
+    <button id="toggleMode" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+  <section id="home" class="hero">
+    <h1>Hello, I'm <span>Grimz</span></h1>
+    <p>Web Developer | Designer | Blogger</p>
+    <a href="#contact" class="hire-btn">Hire Me</a>
+    <div class="socials">
+      <a href="https://github.com/" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
+      <a href="mailto:karampeliasstathis@gmail.com">Email</a>
+    </div>
+  </section>
+  <section id="about">
+    <h2>About Me</h2>
+    <div class="about-flex">
+      <img src="https://i.pravatar.cc/150?img=3" alt="Your avatar" class="avatar">
+      <div>
+        <p>Write a short bio here. Highlight your skills, passions, and what makes you unique.</p>
+        <div class="skills">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>Ruby</span><span>React</span><span>Node.js</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline">
+      <h3>Timeline</h3>
+      <ul>
+        <li><b>2025 - Present:</b> Your Current Job</li>
+        <li><b>2023 - 2025:</b> Previous Position</li>
+        <li><b>2020 - 2023:</b> University/School</li>
+      </ul>
+    </div>
+  </section>
+  <section id="portfolio">
+    <h2>Portfolio</h2>
+    <div class="filter-bar">
+      <button onclick="filterProjects('all')">All</button>
+      <button onclick="filterProjects('web')">Web</button>
+      <button onclick="filterProjects('app')">App</button>
+      <button onclick="filterProjects('game')">Game</button>
+    </div>
+    <div class="projects" id="projects">
+      <div class="project-card">
+        <img src="editor.png" alt="Project 1" class="project-img">
+        <h3>Online Code Editor</h3>
+        <p>A live HTML/CSS/JS playground in your browser.</p>
+        <a href="site.html" target="_blank">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="canvas.png" alt="Project 2" class="project-img">
+        <h3>Drawing Canvas App</h3>
+        <p>Draw, save, and share your sketches.</p>
+        <a href="canvas.html" target="_blank">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="expensetrack.png" alt="Project 3" class="project-img">
+        <h3>Expense Tracker</h3>
+        <p>Track your expenses with a modern UI.</p>
+        <a href="expense-tracker.html" target="_blank">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="snakegame.png" alt="Project 4" class="project-img">
+        <h3>Snake Game</h3>
+        <p>Classic snake game in JavaScript.</p>
+        <a href="snake-game.html" target="_blank">Play Game</a>
+      </div>
+    </div>
+  </section>
+  <section id="career">
+    <h2>Career & Resume</h2>
+    <ul class="timeline">
+      <li><b>2025 - Present:</b> Your Current Job</li>
+      <li><b>2023 - 2025:</b> Previous Position</li>
+      <li><b>2020 - 2023:</b> University/School</li>
+    </ul>
+    <a href="cv.pdf" download class="cv-btn">Download CV</a>
+    <div class="certifications">
+      <h3>Certifications</h3>
+      <ul>
+        <li>Certified Web Developer</li>
+        <li>Python Professional</li>
+      </ul>
+    </div>
+  </section>
+  <section id="testimonials">
+    <h2>Testimonials</h2>
+    <div class="testimonials" id="testimonialsList">
+      <div class="testimonial-card">
+        <img src="https://i.pravatar.cc/100?img=5" alt="Testimonial" class="testimonial-img">
+        <p>"Amazing to work with!"</p>
+        <span>- Alice</span>
+      </div>
+      <div class="testimonial-card">
+        <img src="https://i.pravatar.cc/100?img=6" alt="Testimonial" class="testimonial-img">
+        <p>"Delivered on time and exceeded expectations."</p>
+        <span>- Bob</span>
+      </div>
+    </div>
+  </section>
+  <section id="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery" id="galleryList">
+      <img src="https://picsum.photos/200/140?random=4" alt="Gallery Image 1" class="gallery-img">
+      <img src="https://picsum.photos/200/140?random=5" alt="Gallery Image 2" class="gallery-img">
+      <img src="https://picsum.photos/200/140?random=6" alt="Gallery Image 3" class="gallery-img">
+    </div>
+  </section>
+  <section id="newsletter">
+    <h2>Newsletter</h2>
+    <form id="newsletterForm">
+      <input type="email" placeholder="Your Email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div id="newsletterMsg"></div>
+  </section>
+  <section id="contact">
+    <h2>Contact / Hire Me</h2>
+    <!-- Contact Form in index.html -->
+<form id="contactForm">
+  <input type="email" id="contactEmail" placeholder="Your Email" required>
+  <textarea id="contactMsg" placeholder="Your Message" required></textarea>
+  <button type="submit">Send</button>
+</form>
+<div id="contactStatus"></div>
+  </section>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.<br>
+    Discord: <b>grimz_x1</b><br>
+    <span id="visitorInfo">Loading your IP and location...</span>
+  </footer>
+  <!-- Improved Image Viewer Modal with Mouse Scroll Zoom and ESC Close -->
+  <style>
+    #imgModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(24,20,26,0.97);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      animation: modalFadeIn 0.4s;
+      backdrop-filter: blur(4px);
+    }
+    #imgModal .hud {
+      position: fixed;
+      left: 50%;
+      bottom: 48px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: rgba(34, 34, 44, 0.92);
+      border-radius: 18px;
+      padding: 18px 32px;
+      box-shadow: 0 8px 32px #ff525244, 0 1.5px 6px #b71c1c44;
+      z-index: 10001;
+    }
+    #imgModal .hud button {
+      background: linear-gradient(90deg, #ff5252 60%, #b71c1c 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      font-size: 1.7em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #b71c1c44;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #imgModal .hud button:hover {
+      background: linear-gradient(90deg, #b71c1c 0%, #ff5252 100%);
+      transform: scale(1.13) rotate(-8deg);
+      box-shadow: 0 4px 24px #ff5252cc;
+    }
+    #imgModal .hud .zoom-label {
+      color: #ffd600;
+      font-size: 1.1em;
+      font-family: monospace;
+      margin: 0 8px;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+    #closeImgModal {
+      position: fixed;
+      top: 32px; right: 48px;
+      font-size: 2.2em;
+      background: linear-gradient(90deg, #ff5252 60%, #b71c1c 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 52px; height: 52px;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #b71c1c44;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10002;
+    }
+    #closeImgModal:hover {
+      background: linear-gradient(90deg, #b71c1c 0%, #ff5252 100%);
+      transform: scale(1.13) rotate(8deg);
+      box-shadow: 0 4px 24px #ff5252cc;
+    }
+    #modalImg {
+      max-width: 80vw;
+      max-height: 70vh;
+      user-select: none;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px #b71c1c44;
+      background: #222;
+      transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s;
+      animation: imgPop 0.5s;
+      display: block;
+      margin: 0 auto;
+      cursor: grab;
+    }
+  </style>
+  <div id="imgModal">
+    <button id="closeImgModal" title="Close">&times;</button>
+    <img id="modalImg" src="" alt="View">
+    <div class="hud">
+      <button id="zoomOutBtn" title="Zoom Out">➖</button>
+      <span class="zoom-label" id="zoomLabel">100%</span>
+      <button id="zoomInBtn" title="Zoom In">➕</button>
+    </div>
+  </div>
+  <script>
+    // Fetch and display visitor IP and location (fixed syntax)
+    fetch('https://ipinfo.io/json?token=6e6e5b0e6e6e5b')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('visitorInfo').textContent =
+          `Your IP: ${data.ip} | Location: ${data.city || 'Unknown'}, ${data.country || ''}`;
+      })
+      .catch(() => {
+        document.getElementById('visitorInfo').textContent = "Your IP and location are unavailable.";
+      });
+
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+
+    // Show admin badge if logged in as grimz_x1
+    if (localStorage.getItem('lastUser') === 'grimz_x1') {
+      const nav = document.querySelector('nav');
+      const badge = document.createElement('span');
+      badge.textContent = "ADMIN";
+      badge.style.cssText = "background:#ff5252;color:#fff;padding:3px 10px;border-radius:6px;margin-left:12px;font-weight:bold;letter-spacing:1px;";
+      nav.appendChild(badge);
+    }
+
+    // Full Dark/Light Mode Toggle
+    const toggleBtn = document.getElementById('toggleMode');
+    function setFullTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('full-dark');
+        document.body.classList.remove('full-light');
+        toggleBtn.textContent = "☀️";
+        localStorage.setItem('fullTheme', 'dark');
+      } else {
+        document.body.classList.remove('full-dark');
+        document.body.classList.add('full-light');
+        toggleBtn.textContent = "🌙";
+        localStorage.setItem('fullTheme', 'light');
+      }
+    }
+    toggleBtn.onclick = function() {
+      const isDark = document.body.classList.contains('full-dark');
+      setFullTheme(isDark ? 'light' : 'dark');
+    };
+    setFullTheme(localStorage.getItem('fullTheme') === 'dark' ? 'dark' : 'light');
+
+    (function() {
+      let zoom = 1, isDragging = false, startX = 0, startY = 0, imgX = 0, imgY = 0;
+      const modal = document.getElementById('imgModal');
+      const modalImg = document.getElementById('modalImg');
+      const zoomLabel = document.getElementById('zoomLabel');
+      const closeBtn = document.getElementById('closeImgModal');
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+
+      document.querySelectorAll('.project-img, .gallery-img, .testimonial-img, .avatar').forEach(img => {
+        img.style.cursor = "zoom-in";
+        img.onclick = function(e) {
+          e.preventDefault();
+          zoom = 1; imgX = 0; imgY = 0;
+          modalImg.src = this.src;
+          resetPosition();
+          zoomLabel.textContent = "100%";
+          modal.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        };
+      });
+
+      function closeModal() {
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+        isDragging = false;
+        modalImg.style.cursor = "grab";
+      }
+      closeBtn.onclick = closeModal;
+
+      window.addEventListener('keydown', function(e) {
+        if (modal.style.display === "flex" && (e.key === "Escape" || e.key === "Esc")) closeModal();
+      });
+
+      zoomInBtn.onclick = function() {
+        if (zoom < 3) zoom = Math.round((zoom + 0.2) * 100) / 100;
+        resetPosition();
+        zoomLabel.textContent = Math.round(zoom*100) + "%";
+      };
+      zoomOutBtn.onclick = function() {
+        if (zoom > 0.4) zoom = Math.round((zoom - 0.2) * 100) / 100;
+        resetPosition();
+        zoomLabel.textContent = Math.round(zoom*100) + "%";
+      };
+
+      modalImg.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        if (e.deltaY < 0 && zoom < 3) zoom = Math.round((zoom + 0.1) * 100) / 100;
+        else if (e.deltaY > 0 && zoom > 0.4) zoom = Math.round((zoom - 0.1) * 100) / 100;
+        resetPosition();
+        zoomLabel.textContent = Math.round(zoom*100) + "%";
+      });
+
+      modalImg.addEventListener('mousedown', function(e) {
+        if (zoom <= 1) return;
+        isDragging = true;
+        startX = e.clientX - imgX;
+        startY = e.clientY - imgY;
+        modalImg.style.cursor = "grabbing";
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        imgX = e.clientX - startX;
+        imgY = e.clientY - startY;
+        modalImg.style.transform = `scale(${zoom}) translate(${imgX/zoom}px,${imgY/zoom}px)`;
+      });
+      window.addEventListener('mouseup', function() {
+        isDragging = false;
+        modalImg.style.cursor = zoom > 1 ? "grab" : "zoom-in";
+      });
+
+      modalImg.oncontextmenu = function(e) { e.preventDefault(); };
+
+      function resetPosition() {
+        imgX = 0; imgY = 0;
+        modalImg.style.transform = `scale(${zoom}) translate(0,0)`;
+      }
+    })();
+
+    // Contact form handling
+    document.getElementById('contactForm').onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('contactEmail').value;
+      const msg = document.getElementById('contactMsg').value;
+      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+      messages.push({ email, msg, date: new Date().toLocaleString() });
+      localStorage.setItem('contactMessages', JSON.stringify(messages));
+      this.reset();
+      document.getElementById('contactStatus').textContent = "Message sent! Thank you.";
+    };
+
+    // For displaying comments or any user content, use escapeHTML
+    // Example:
+    // element.innerHTML = escapeHTML(userInput);
+  </script>
+</body>
+</html>

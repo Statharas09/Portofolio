@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Snake Game</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #18141a; color: #fff; }
+    .snake-container { max-width: 400px; margin: 40px auto; background: #222; border-radius: 14px; box-shadow: 0 4px 24px #b71c1c33; padding: 32px 24px; text-align: center; }
+    .snake-container h2 { color: #ff5252; }
+    #snakeCanvas { background: #111; border: 3px solid #ff5252; border-radius: 8px; display: block; margin: 0 auto 18px auto; }
+    .score { color: #ffd600; font-weight: bold; margin-bottom: 10px; }
+    .snake-controls { color: #ff5252; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="snake-container">
+    <h2>Snake Game</h2>
+    <div class="score" id="score">Score: 0</div>
+    <canvas id="snakeCanvas" width="320" height="320"></canvas>
+    <div class="snake-controls">
+      Use <b>Arrow Keys</b> or <b>WASD</b> to play.<br>
+      <button onclick="restartSnake()">Restart</button>
+    </div>
+  </div>
+  <footer style="text-align:center;margin-top:40px;color:#ff5252;">
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script>
+    // Snake Game Logic
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas.getContext('2d');
+    const box = 20;
+    let snake, food, dx, dy, score, game, changingDir;
+
+    function initSnake() {
+      snake = [{x: 8*box, y: 8*box}];
+      dx = box; dy = 0;
+      score = 0;
+      changingDir = false;
+      placeFood();
+      document.getElementById('score').textContent = "Score: 0";
+      if (game) clearInterval(game);
+      game = setInterval(draw, 100);
+    }
+
+    function placeFood() {
+      food = {
+        x: Math.floor(Math.random()*16)*box,
+        y: Math.floor(Math.random()*16)*box
+      };
+    }
+
+    function draw() {
+      ctx.fillStyle = "#111";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      for (let i=0; i<snake.length; i++) {
+        ctx.fillStyle = i==0 ? "#ff5252" : "#ffd600";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = "#222";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = "#43a047";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let headX = snake[0].x + dx;
+      let headY = snake[0].y + dy;
+
+      // Wall collision
+      if (headX<0 || headX>=canvas.width || headY<0 || headY>=canvas.height || collision(headX, headY)) {
+        clearInterval(game);
+        ctx.fillStyle = "#ff5252";
+        ctx.font = "24px Fira Mono, monospace";
+        ctx.fillText("Game Over!", 80, 160);
+        return;
+      }
+
+      let ate = (headX === food.x && headY === food.y);
+      if (ate) {
+        score++;
+        document.getElementById('score').textContent = "Score: " + score;
+        placeFood();
+      } else {
+        snake.pop();
+      }
+      snake.unshift({x: headX, y: headY});
+      changingDir = false;
+    }
+
+    function collision(x, y) {
+      for (let i=0; i<snake.length; i++) {
+        if (snake[i].x === x && snake[i].y === y) return true;
+      }
+      return false;
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (changingDir) return;
+      changingDir = true;
+      if (e.key === "ArrowLeft" || e.key === "a") { if (dx===0) {dx=-box;dy=0;} }
+      else if (e.key === "ArrowUp" || e.key === "w") { if (dy===0) {dx=0;dy=-box;} }
+      else if (e.key === "ArrowRight" || e.key === "d") { if (dx===0) {dx=box;dy=0;} }
+      else if (e.key === "ArrowDown" || e.key === "s") { if (dy===0) {dx=0;dy=box;} }
+    });
+
+    function restartSnake() { initSnake(); }
+    window.restartSnake = restartSnake;
+    initSnake();
+
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+  </script>
+  <a href="login.html" id="authBtn">Login</a>
+</body>
+</html>

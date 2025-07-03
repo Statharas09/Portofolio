@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Suggestions | Grimzx</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .red-auth-btn {
+      background: #ff5252;
+      color: #fff !important;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 1.15em;
+      font-weight: bold;
+      margin-left: 18px;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px #ff525244;
+      display: inline-block;
+      border: none;
+    }
+    .red-auth-btn:hover {
+      background: #b71c1c;
+      color: #fff !important;
+      box-shadow: 0 6px 24px #ff525288;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="login.html" id="authBtn" class="red-auth-btn">Login</a>
+  </nav>
+  <main style="max-width:700px;margin:40px auto 32px auto;background:#222;border-radius:12px;box-shadow:0 2px 16px #1a181b;padding:36px 40px 32px 40px;">
+    <h2 style="color:#ff5252;">Suggestions</h2>
+    <article id="suggestionPost" style="background:#18141a;border-radius:8px;padding:24px 18px;margin-bottom:32px;">
+      <h3 style="margin-top:0;color:#ff5252;">Suggestions</h3>
+      <p>Share your suggestions for the site or anything you want to see improved!</p>
+    </article>
+    <section>
+      <h3 style="margin-top:0;color:#ff5252;">Suggestions</h3>
+      <ul id="commentsList"></ul>
+      <div id="loginToCommentMsg" style="color:#ff5252;display:none;margin:10px 0;">
+        You must <a href="login.html" style="color:#ff5252;text-decoration:underline;">login</a> to post a comment.
+      </div>
+      <form id="commentForm" style="margin-top:10px;">
+        <input id="commentInput" type="text" placeholder="Write a suggestion..." required style="width:70%;">
+        <button type="submit">Post</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 Grimzx. All rights reserved.
+  </footer>
+  <script>
+    // XSS Protection
+    function escapeHTML(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+    // Time ago helper
+    function timeAgo(date) {
+      const now = Date.now();
+      const diff = Math.floor((now - date) / 1000);
+      if (diff < 60) return `${diff} second${diff !== 1 ? 's' : ''} ago`;
+      if (diff < 3600) return `${Math.floor(diff/60)} minute${Math.floor(diff/60) !== 1 ? 's' : ''} ago`;
+      if (diff < 86400) return `${Math.floor(diff/3600)} hour${Math.floor(diff/3600) !== 1 ? 's' : ''} ago`;
+      return `${Math.floor(diff/86400)} day${Math.floor(diff/86400) !== 1 ? 's' : ''} ago`;
+    }
+    // Auth button logic for nav
+    function updateAuthBtn() {
+      const lastUser = localStorage.getItem('lastUser');
+      const btn = document.getElementById('authBtn');
+      if (!btn) return;
+      if (lastUser) {
+        btn.textContent = "Logout";
+        btn.href = "#";
+        btn.onclick = function(e) {
+          e.preventDefault();
+          localStorage.removeItem('lastUser');
+          btn.textContent = "Login";
+          btn.href = "login.html";
+          btn.onclick = null;
+          location.reload();
+        };
+      } else {
+        btn.textContent = "Login";
+        btn.href = "login.html";
+        btn.onclick = null;
+      }
+    }
+    updateAuthBtn();
+
+    // Only one post: "Suggestions"
+    const postId = "suggestions";
+
+    // Render comments for Suggestions
+    function renderComments() {
+      const list = document.getElementById('commentsList');
+      list.innerHTML = '';
+      const blogComments = JSON.parse(localStorage.getItem('blogComments') || '{}');
+      const comments = blogComments[postId] || [];
+      if (comments.length === 0) {
+        list.innerHTML = '<li class="empty-msg">Share Youre Ideas</li>';
+        return;
+      }
+      comments.forEach(c => {
+        const user = escapeHTML(c.user || "Anonymous");
+        const text = escapeHTML(c.text || "");
+        const ago = timeAgo(c.date || Date.now());
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${user}:</b> ${text} <span style="color:#888;font-size:0.95em;">(${ago})</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    // Check if user is logged in
+    function getCurrentUser() {
+      return localStorage.getItem('lastUser') || null;
+    }
+
+    // On page load, show/hide comment form based on login
+    document.addEventListener('DOMContentLoaded', function() {
+      renderComments();
+      if (!getCurrentUser()) {
+        document.getElementById('commentForm').style.display = "none";
+        document.getElementById('loginToCommentMsg').style.display = "";
+      } else {
+        document.getElementById('commentForm').style.display = "";
+        document.getElementById('loginToCommentMsg').style.display = "none";
+      }
+    });
+
+    // Handle comment form
+    document.getElementById('commentForm').onsubmit = function(e) {
+      e.preventDefault();
+      const user = getCurrentUser();
+      if (!user) {
+        alert("You must be logged in to post a suggestion.");
+        return;
+      }
+      const text = document.getElementById('commentInput').value.trim();
+      if (!text) return;
+
+      // Save suggestion as a "pending comment" for admin review
+      const pendingComments = JSON.parse(localStorage.getItem('pendingSuggestions') || '[]');
+      pendingComments.push({
+        user: user,
+        text: text,
+        date: Date.now()
+      });
+      localStorage.setItem('pendingSuggestions', JSON.stringify(pendingComments));
+
+      this.reset();
+      // Do NOT call renderComments(); // So the user doesn't see their suggestion
+      alert("Your suggestion has been sent for review.");
+    };
+  </script>
+</body>
+</html>
